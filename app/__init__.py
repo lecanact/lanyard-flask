@@ -58,4 +58,14 @@ def create_app(env='development'):
             'discord_invite': 'https://discord.gg/lanyard'
         }, 200
 
+    @app.errorhandler(404)
+    def not_found(error):
+        return {
+            'error': {
+                'code': 'not_found',
+                'message': 'Route does not exist'
+            },
+            'success': False
+        }, 404
+
     return app

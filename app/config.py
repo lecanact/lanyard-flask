@@ -9,6 +9,7 @@ class Config:
     REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', None)
 
     BOT_TOKEN = os.getenv('BOT_TOKEN')
+    USER_TOKEN = os.getenv('USER_TOKEN')
     BOT_IDEMPOTENCY_ENV_KEY = os.getenv('BOT_IDEMPOTENCY_ENV_KEY')
 
     HTTP_PORT = int(os.getenv('HTTP_PORT', 4001))

@@ -132,10 +132,9 @@ def handle_heartbeat(data):
 
 def broadcast_presence_update(user_id: str, presence_data: dict):
     """Broadcast presence update to all subscribed clients."""
-    from services.presence import build_pretty_presence, get_all as kv_get_all
-
-    kv_data = kv_get_all(user_id)
-    pretty = build_pretty_presence(presence_data, kv_data)
+    from services.presence import build_pretty_presence
+    # kv_data = kv_get_all(user_id)
+    pretty = build_pretty_presence(presence_data, {})
     pretty['user_id'] = user_id
 
     socketio.emit('message', {

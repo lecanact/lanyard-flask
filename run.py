@@ -37,5 +37,11 @@ if __name__ == '__main__':
 
     port = app.config['HTTP_PORT']
     logger.info(f"Starting Lanyard on port {port}...")
-    socketio.run(app, host='0.0.0.0', port=port, debug=app.debug)
+    socketio.run(
+        app,
+        host='0.0.0.0',
+        port=port,
+        debug=app.debug,
+        allow_unsafe_werkzeug=True
+    )
 
