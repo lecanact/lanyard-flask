@@ -1,29 +1,15 @@
-FROM elixir:1.19-alpine AS build
-
-RUN apk add git
-
-ENV MIX_ENV=prod
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# get deps first so we have a cache
-ADD mix.exs mix.lock /app/
-RUN \
-	cd /app && \
-	mix local.hex --force && \
-	mix local.rebar --force && \
-	mix deps.get
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# then make a release build
-ADD . /app/
-RUN \
-	mix compile && \
-	mix release
+COPY . .
 
-FROM elixir:1.19-alpine
+ENV FLASK_ENV=production
+ENV HTTP_PORT=4001
 
-RUN apk add redis
+EXPOSE 4001
 
-COPY --from=build /app/_build/prod/rel/lanyard /opt/lanyard
-
-CMD [ "/opt/lanyard/bin/lanyard", "start" ]
+CMD ["python", "run.py"]
