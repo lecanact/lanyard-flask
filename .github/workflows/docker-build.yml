@@ -1,0 +1,19 @@
+name: Docker Build CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "services/**"
+      - "**.py"
+      - "Dockerfile"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install git
+      - uses: actions/checkout@v6.0.2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag lcjunior1220/lanyard-flask:latest
