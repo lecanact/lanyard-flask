@@ -2,14 +2,14 @@
 
 # 🏷️ Expose your Discord presence and activities to a RESTful API and WebSocket
 
-Lanyard is a service that makes it super easy to export your live Discord presence to an API endpoint (`api.lanyard.rest/v1/users/:your_id`) and to a WebSocket for you to use wherever you want.
+Lanyard is a service that makes it super easy to export your live Discord presence to an API endpoint (`lanyard.prp.bio/v1/users/:your_id`) and to a WebSocket for you to use wherever you want.
 
 This is a Python/Flask rewrite of the original Elixir version with full feature parity:
-- REST API for presence data
-- Real-time WebSocket gateway
-- Key-Value store for custom data
-- Discord bot commands
-- Prometheus metrics
+- REST API for presence data (W.I.P)
+- Real-time WebSocket gateway (W.I.P)
+- Key-Value store for custom data (W.I.P)
+- Discord bot commands (W.I.P)
+- Prometheus metrics (W.I.P)
 
 ## Quick Start
 
@@ -21,8 +21,8 @@ This is a Python/Flask rewrite of the original Elixir version with full feature 
 ### Installation
 
 ```bash
-git clone https://github.com/Phineas/lanyard.git
-cd lanyard
+git clone https://github.com/lecanact/lanyard-flask.git
+cd lanyard-flask
 pip install -r requirements.txt
 ```
 
@@ -31,12 +31,18 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-BOT_TOKEN=your_discord_bot_token
+BOT_TOKEN=your_discord_bot_token_here
+USER_TOKEN=your_discord_user_token_here
+PYTHONDONTWRITEBYTECODE=1
+PYTHONUNBUFFERED=1
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_DB=0
+REDIS_PASSWORD=
 HTTP_PORT=4001
 FLASK_ENV=development
+SECRET_KEY=your-secret-key-here
+BOT_IDEMPOTENCY_ENV_KEY=your_bot_idempotency_env_key_here
 ```
 
 ### Running Locally
@@ -51,7 +57,7 @@ The API will be available at `http://localhost:4001`
 
 ### Build the image
 ```bash
-docker build -t lanyard:latest .
+docker build -t lanyard-flask:latest .
 ```
 
 ### Run with Docker Compose
@@ -65,7 +71,7 @@ This starts both the Redis instance and Lanyard API server.
 ## API Documentation
 
 ### Get User Presence
-`GET https://api.lanyard.rest/v1/users/:user_id`
+`GET https://lanyard.prp.bio/v1/users/:user_id`
 
 Example response:
 ```json
@@ -103,22 +109,22 @@ Example response:
 ```
 
 ### Get Current User Presence
-`GET https://api.lanyard.rest/v1/users/@me`
+`GET https://lanyard.prp.bio/v1/users/@me`
 
 Requires `Authorization` header with API key.
 
 ### Set KV Pair
-`PUT https://api.lanyard.rest/v1/users/:user_id/kv/:key`
+`PUT https://lanyard.prp.bio/v1/users/:user_id/kv/:key`
 
 Body: raw string value
 
 ### Set Multiple KV Pairs
-`PATCH https://api.lanyard.rest/v1/users/:user_id/kv`
+`PATCH https://lanyard.prp.bio/v1/users/:user_id/kv`
 
 Body: JSON object with key-value pairs
 
 ### Delete KV Pair
-`DELETE https://api.lanyard.rest/v1/users/:user_id/kv/:key`
+`DELETE https://lanyard.prp.bio/v1/users/:user_id/kv/:key`
 
 ## KV Store
 
@@ -131,7 +137,7 @@ The KV store allows storing custom key-value data linked to your Discord account
 
 ### Getting an API Key
 
-DM the Lanyard bot with `.apikey` to receive your API key.
+DM the Spook bot with `.apikey` to receive your API key.
 
 ### Discord Bot Commands
 - `.apikey` - Get/generate API key (DM only)
@@ -141,7 +147,7 @@ DM the Lanyard bot with `.apikey` to receive your API key.
 
 ## WebSocket
 
-Connect to `wss://api.lanyard.rest/socket` for real-time presence updates.
+Connect to `wss://lanyard.prp.bio/socket` for real-time presence updates.
 
 ### Opcodes
 
@@ -205,7 +211,7 @@ Prometheus metrics are available at `GET /metrics`
 ## Project Structure
 
 ```
-lanyard-python/
+lanyard-flask/
 ├── app/
 │   ├── __init__.py
 │   ├── config.py
@@ -216,11 +222,12 @@ lanyard-python/
 │       ├── v1/
 │       │   └── __init__.py
 │       ├── metrics.py
-│       └── discord.py
+│
 ├── services/
 │   ├── redis_client.py
 │   ├── presence.py
 │   ├── kv_store.py
+│   ├── metrics.py
 │   └── socketio_handler.py
 ├── run.py
 ├── requirements.txt
@@ -233,6 +240,9 @@ lanyard-python/
 
 Environment variables:
 - `BOT_TOKEN` - Discord bot token (required)
+- `USER_TOKEN` - Discord user token (required)
+- `PYTHONDONTWRITEBYTECODE` - Stops writing bytes (default: 1)
+- `PYTHONUNBUFFERED` - Remove buffering (default: 1)
 - `REDIS_HOST` - Redis server host (default: localhost)
 - `REDIS_PORT` - Redis server port (default: 6379)
 - `REDIS_DB` - Redis database number (default: 0)
@@ -243,14 +253,14 @@ Environment variables:
 
 ## Features
 
-✅ REST API for Discord presence  
-✅ Real-time WebSocket gateway  
-✅ Key-value store with custom data  
-✅ Discord bot commands  
-✅ Prometheus metrics  
-✅ Multi-instance sync via Redis pub/sub  
-✅ Full API key authentication  
+✅ REST API for Discord presence (W.I.P)
+✅ Real-time WebSocket gateway (W.I.P)
+✅ Key-value store with custom data (W.I.P)
+✅ Discord bot commands (W.I.P)
+✅ Prometheus metrics (W.I.P)
+✅ Multi-instance sync via Redis pub/sub (W.I.P)
+✅ Full API key authentication (W.I.P)
 
-## License
+## Credits
 
-MIT
+Credits to @Phineas for creating the original Lanyard.
