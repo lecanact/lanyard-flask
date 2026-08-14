@@ -14,6 +14,6 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install git
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v7.0.1
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag lcjunior1220/lanyard-flask:latest
